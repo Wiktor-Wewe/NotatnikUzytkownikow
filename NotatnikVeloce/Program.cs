@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using NotatnikVeloce.Models;
+using NotatnikVeloce.Services;
+using NotatnikVeloce.Services.Interfaces;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,10 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>( options => 
     options.UseInMemoryDatabase(databaseName: "InMemmoryDb"));
 
+builder.Services.AddControllersWithViews();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
