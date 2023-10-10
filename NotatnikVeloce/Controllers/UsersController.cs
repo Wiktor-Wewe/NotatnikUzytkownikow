@@ -7,6 +7,8 @@ namespace NotatnikVeloce.Controllers
 
     [Route("api/Users")]
     [ApiController]
+    [ValidateAntiForgeryToken]
+
     public class UsersController : Controller
     {
         private readonly IUserService _userService;

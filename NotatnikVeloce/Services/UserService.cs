@@ -28,6 +28,16 @@ namespace NotatnikVeloce.Services
 
         public User? AddUser(UserDto userDto)
         {
+            if (userDto.Name == null || userDto.Surname == null || userDto.Email == null)
+            {
+                return null;
+            }
+
+            if(userDto.BirthDate > DateTime.Now)
+            {
+                return null;
+            }
+
             var user = new User
             {
                 Id = Guid.NewGuid(),
@@ -59,11 +69,27 @@ namespace NotatnikVeloce.Services
             {
                 return null;
             }
+            
+            if(userDto.Name != null)
+            {
+                user.Name = userDto.Name;
+            }
 
-            user.Name = userDto.Name;
-            user.Surname = userDto.Surname;
-            user.Email = userDto.Email;
-            user.BirthDate = userDto.BirthDate;
+            if(userDto.Surname != null)
+            {
+                user.Surname = userDto.Surname;
+            }
+
+            if(userDto.Email != null)
+            {
+                user.Email = userDto.Email;
+            }
+
+            if(userDto.BirthDate < DateTime.Now)
+            {
+                user.BirthDate = userDto.BirthDate;
+            }
+
             user.PhoneNumber = userDto.PhoneNumber;
             user.ShoeSize = userDto.ShoeSize;
             user.SorkstationId = userDto.SorkstationId;

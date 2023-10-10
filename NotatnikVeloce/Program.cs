@@ -1,4 +1,8 @@
+using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using NotatnikVeloce;
 using NotatnikVeloce.Models;
 using NotatnikVeloce.Services;
 using NotatnikVeloce.Services.Interfaces;
@@ -16,6 +20,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 builder.Services.AddScoped<IUserService, UserService>();
 
