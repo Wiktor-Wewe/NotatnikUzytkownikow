@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NotatnikVeloce.Models;
 using NotatnikVeloce.Services.Interfaces;
 
@@ -7,7 +8,7 @@ namespace NotatnikVeloce.Controllers
 
     [Route("api/Users")]
     [ApiController]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken]
 
     public class UsersController : Controller
     {
@@ -37,6 +38,16 @@ namespace NotatnikVeloce.Controllers
                 return NotFound();
             }
             return Ok(user);
+        }
+
+        [HttpGet("excel-raport")]
+        public IActionResult GetRaportInExcel()
+        {
+            var bytes = _userService.GetRaportInExcel();
+            string filename = $"{DateTime.Now.ToString("yyyyMMddHHmmss")}.xlsx";
+            string type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            return File(bytes, type, filename);
         }
 
         [HttpPost]

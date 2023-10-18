@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Numerics;
 using static NotatnikVeloce.Models.User;
 
 namespace NotatnikVeloce.Models
@@ -28,7 +29,22 @@ namespace NotatnikVeloce.Models
         public Gender Sex { get; set; }
         public string? PhoneNumber { get; set; }
         public double? ShoeSize { get; set; }
-        public int? SorkstationId { get; set; }
+        public int? WorkstationId { get; set; }
+
+        public string GetGender()
+        {
+            return Sex.ToString();
+        }
+
+        public int GetAge()
+        {
+            var today = DateTime.Today;
+            int age = today.Year - BirthDate.Year;
+            if (today.Month < BirthDate.Month || (today.Month == BirthDate.Month && today.Day < BirthDate.Day))
+                age--;
+
+            return age;
+        }
     }
 
     public class UserDto
@@ -40,6 +56,6 @@ namespace NotatnikVeloce.Models
         public Gender Sex { get; set; }
         public string? PhoneNumber { get; set; }
         public double? ShoeSize { get; set; }
-        public int? SorkstationId { get; set; }
+        public int? WorkstationId { get; set; }
     }
 }
