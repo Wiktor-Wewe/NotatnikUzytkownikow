@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using Newtonsoft.Json;
 using NotatnikVeloce.Models;
 using NotatnikVeloce.Services.Interfaces;
 using OfficeOpenXml;
@@ -68,6 +71,53 @@ namespace NotatnikVeloce.Services
 
                 byte[] raportBytes = package.GetAsByteArray();
                 return raportBytes;
+            }
+        }
+
+        public byte[] GetRaportInPdf()
+        {
+            var users = GetUsers();
+            var attributeNumber = typeof(User).GetProperties().Length; // number of users attributes - guid + age so nothing change
+
+            using (var ms = new MemoryStream())
+            {
+                using (var writer = new PdfWriter(ms))
+                {
+                    using (var pdf = new PdfDocument(writer))
+                    {
+                        var document = new Document(pdf);
+                        var table = new Table(attributeNumber);
+
+                        string[] headers = { "Name", "Surname", "Email", "Birth Date", "Age", "Sex", "Phone number", "Shoe Size", "Workstation Id" };
+                        foreach (var header in headers)
+                        {
+                            var cell = new Cell().Add(new Paragraph(header));
+                            table.AddCell(cell);
+                        }
+                        table.StartNewRow();
+
+                        foreach (var user in users)
+                        {
+                            table.AddCell(user.Name);
+                            table.AddCell(user.Surname);
+                            table.AddCell(user.Email);
+                            table.AddCell(user.BirthDate.ToString("yyyy-MM-dd"));
+                            table.AddCell(user.GetAge().ToString());
+                            table.AddCell(user.GetGender());
+                            table.AddCell(user.PhoneNumber);
+                            table.AddCell(user.ShoeSize.ToString());
+                            table.AddCell(user.WorkstationId.ToString());
+
+                            table.StartNewRow();
+                        }
+
+                        document.Add(table);
+                    }
+                }
+
+                byte[] pdfBytes = ms.ToArray();
+
+                return pdfBytes;
             }
         }
 

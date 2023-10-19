@@ -50,6 +50,16 @@ namespace NotatnikVeloce.Controllers
             return File(bytes, type, filename);
         }
 
+        [HttpGet("pdf-raport")]
+        public IActionResult GetRaportInPdf()
+        {
+            var bytes = _userService.GetRaportInPdf();
+            string filename = $"{DateTime.Now.ToString("yyyyMMddHHmmss")}.pdf";
+            string type = "application/pdf";
+
+            return File(bytes, type, filename);
+        }
+
         [HttpPost]
         public IActionResult Create([FromBody]UserDto userdto) 
         {
