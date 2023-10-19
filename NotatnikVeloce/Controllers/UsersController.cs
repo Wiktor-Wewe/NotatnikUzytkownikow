@@ -8,7 +8,9 @@ namespace NotatnikVeloce.Controllers
 
     [Route("api/Users")]
     [ApiController]
-    //[ValidateAntiForgeryToken]
+#if !DEBUG
+    [ValidateAntiForgeryToken]
+#endif
 
     public class UsersController : Controller
     {
